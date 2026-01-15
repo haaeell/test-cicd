@@ -10,19 +10,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout Code
-      uses: actions/checkout@v4
+    - uses: actions/checkout@v4
 
-    - name: Setup PHP
-      uses: shivammathur/setup-php@v2
-      with:
-        php-version: '8.2'
-
-    - name: Install Composer
-      run: composer install --no-dev --optimize-autoloader
-
-    # Upload source Laravel (kecuali public)
-    - name: Deploy App (laravel_app)
+    - name: Deploy App
       uses: SamKirkland/FTP-Deploy-Action@v4.3.5
       with:
         server: ${{ secrets.FTP_HOST }}
@@ -33,10 +23,10 @@ jobs:
         exclude: |
           **/.git*
           **/node_modules/**
+          **/vendor/**
           **/public/**
           **/.env
 
-    # Upload public folder
     - name: Deploy Public Folder
       uses: SamKirkland/FTP-Deploy-Action@v4.3.5
       with:
